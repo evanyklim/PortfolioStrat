@@ -11,7 +11,11 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "angular": "^1.4.7",
+    "angular-ui-router": "^0.2.15",
+    "bluebird": "^3.0.5",
     "express": "^4.13.3",
+    "highcharts-ng": "0.0.11",
     "mongodb": "^2.0.48",
     "mongoose": "^4.2.5",
     "nodemon": "^1.8.1"

@@ -3,10 +3,9 @@ var app = express();
 var path = require('path');
 
 var indexHtmlPath = path.join(__dirname, '../views/index.html');
-var clientPath = path.join(__dirname, '../client/js');
+var clientPath = path.join(__dirname, '../client/angular');
 var nodePath = path.join(__dirname, '../node_modules');
 
-app.use(express.static(indexHtmlPath));
 app.use(express.static(clientPath));
 app.use(express.static(nodePath));
 
@@ -20,7 +19,7 @@ app.get('/graph/get', function (req, res, next) {
 	res.send('<div>get</div>');
 });
 
-app.use('/', function (req, res, next) {
+app.use('/*', function (req, res, next) {
 	res.sendFile(indexHtmlPath);
 });
 

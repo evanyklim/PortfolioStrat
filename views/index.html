@@ -4,14 +4,15 @@
 <head>
   <base href="/" />
   <title>PortfolioStrat</title> 
-  <script src="/angular/angular.min.js"></script>
-  <script src='form1.js'></script>
-  <script src='form2.js'></script>
+  <script src='/angular/angular.min.js'></script>
+  <script src='/angular-ui-router/release/angular-ui-router.min.js'></script>
+  <script src='app.js'></script>
+  <script src='formOne.js'></script>
+  <script src='formTwo.js'></script>
 </head>
 
-<body>
-  <h1>PortfolioStrat Mini</h1>
-  <!-- angular views go here   -->
+<body ng-app="portfolioStratApp">
+  <div ui-view></div>
 </body>
 
 </html>
