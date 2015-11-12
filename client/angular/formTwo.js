@@ -6,6 +6,6 @@ app.config(function ($stateProvider) {
   });
 });
 
-app.controller('formTwoCtrl', function () {
+app.controller('formTwoCtrl', function ($scope, GraphFactory) {
 	
 });
