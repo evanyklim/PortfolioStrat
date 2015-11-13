@@ -11,22 +11,34 @@ app.controller('formOneCtrl', function ($scope, GraphFactory) {
 	$scope.createGraph = function (graph) {
 		// http service to create graph
 		GraphFactory.create(graph).then(function (data) {
-			// set config object here in order to display graph
-			var config = $scope.chartConfig;
-			var graphData = _.unzip(data.data[0].series);
+			console.log(data);
+			// set config object properties in order to display graph correctly
+			var config = $scope.chartConfig,
+					// lodash unzips the data array
+					graphData = _.unzip(data.data[0].series);  
 
 			config.title.text = data.title;
 			config.options.chart.type = data.chart_type;
-			config.series = [{ data: graphData[1] }];
+			
+
+			// scatter charts require data to be treated differently for configuration
 			if (data.chart_type === 'scatter') {
-				var scatterData = _.unzip(data.data[1].series);
-				config.series.push({ data: null });
-				config.series[1].data = scatterData[1];
+				// unzip additional data poins
+				var additionalData = _.unzip(data.data[1].series);
+
+				// zip all data points together
+				var scatterData = _.zip(graphData[1], additionalData[1]);
+				config.series = [{ data: scatterData }];
+			} else {
+				// this is how data for bars and lines is loaded
+				// handle x Axis labels
+				config.xAxis.categories = graphData[0];
+				config.series = [{ data: graphData[1] }];
 			}
-			$scope.chartConfig.xAxis.categories = graphData[0];
 		});
 	}
 
+	// contains configurations for the chart on form 1
 	$scope.chartConfig = {
     options: {
       chart: {
@@ -60,6 +72,10 @@ app.factory('GraphFactory', function ($http) {
 			$http.get('graph/get/' + id).then(function (res) {
 				return res.data;
 			});
+		},
+		// organize data for highcharts config object
+		organize: function (config, data) {
+			//refactor from above code
 		}
 	};
 });

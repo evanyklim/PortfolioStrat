@@ -13,7 +13,9 @@ app.config(function ($stateProvider) {
 
 app.controller('formTwoCtrl', function ($scope, GraphFactory, fetchAll) {
 	
-	$scope.allGraphs = fetchAll;  // retrieve all graph ids for the select control
+	// retrieve all graph ids for the select control
+	$scope.allGraphs = fetchAll;  
+	// for retrieving graphs by _id
 	$scope.fetchGraph = function (id) {
 
 		GraphFactory.get(id).then(function (data) {
