@@ -13,17 +13,20 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(clientPath));
 app.use(express.static(nodePath));
 
-app.post('/graph/save', function (req, res, next) {
-	// saves a graph to the graph model
-	console.log('req body', req.body);
-	res.send({a:1,b:2});
-});
+// graph routes
+app.use('/graph', require('./routes/graphs'));
 
-app.get('/graph/get', function (req, res, next) {
-	// retrieves a graph using _id
-	// use query params?
-	res.send('<div>get</div>');
-});
+// app.post('/graph/save', function (req, res, next) {
+// 	// saves a graph to the graph model
+// 	console.log('req body', req.body);
+// 	res.send({a:1,b:2});
+// });
+
+// app.get('/graph/get', function (req, res, next) {
+// 	// retrieves a graph using _id
+// 	// use query params?
+// 	res.send('<div>get</div>');
+// });
 
 app.use('/*', function (req, res, next) {
 	res.sendFile(indexHtmlPath);
