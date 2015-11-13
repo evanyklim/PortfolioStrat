@@ -7,7 +7,7 @@ var chance = new Chance();
 module.exports = router;
 
 router.post('/save', function (req, res, next) {
-	// console.log('save route!');
+
 	var body = req.body,
 	 		min = body.data_min, 
 			max = body.data_max,
@@ -28,15 +28,13 @@ router.post('/save', function (req, res, next) {
 });
 
 router.get('/get/:_id', function (req, res, next) {
-	// console.log('get request')
-	// console.log('req.params', req.params);
 	
 	// specify search param: if no id passed then return all documents
 	var search = {};
 	if (req.params._id !== 'undefined') {
 		search = req.params;
 	}
-	// console.log('search is', search)
+
 	Graph.find(search).exec().then(function (graphs) {
 		res.send(graphs);
 	});
