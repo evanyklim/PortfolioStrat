@@ -10,51 +10,21 @@ app.controller('formOneCtrl', function ($scope, GraphFactory) {
 	
 	$scope.createGraph = function (graph) {
 		// http service to create graph
+		// returns graph data to render on screen
 		GraphFactory.create(graph).then(function (data) {
-			console.log(data);
-			// set config object properties in order to display graph correctly
-			var config = $scope.chartConfig,
-					// lodash unzips the data array
-					graphData = _.unzip(data.data[0].series);  
 
-			config.title.text = data.title;
-			config.options.chart.type = data.chart_type;
-			
-
-			// scatter charts require data to be treated differently for configuration
-			if (data.chart_type === 'scatter') {
-				// unzip additional data poins
-				var additionalData = _.unzip(data.data[1].series);
-
-				// zip all data points together
-				var scatterData = _.zip(graphData[1], additionalData[1]);
-				config.series = [{ data: scatterData }];
-			} else {
-				// this is how data for bars and lines is loaded
-				// handle x Axis labels
-				config.xAxis.categories = graphData[0];
-				config.series = [{ data: graphData[1] }];
-			}
+			GraphFactory.organize($scope.chartConfig, data);
 		});
 	}
 
 	// contains configurations for the chart on form 1
 	$scope.chartConfig = {
     options: {
-      chart: {
-        type: '',
-        zoomType: 'x'
-      }
+      chart: { type: '', zoomType: 'x' }
     },
-    series: [{
-      data: null
-    }],
-    title: {
-      text: ''
-    },
-    xAxis: {
-    	categories: null
-    },
+    series: [{ data: null }],
+    title: { text: '' },
+    xAxis: { categories: null },
     loading: false
   }
 });
@@ -69,13 +39,33 @@ app.factory('GraphFactory', function ($http) {
 		},
 		// retrieve graph from db
 		get: function (id) {
-			$http.get('graph/get/' + id).then(function (res) {
+			return $http.get('graph/get/' + id).then(function (res) {
 				return res.data;
 			});
 		},
 		// organize data for highcharts config object
 		organize: function (config, data) {
-			//refactor from above code
+		
+			// lodash unzips the data array
+			var graphData = _.unzip(data.data[0].series);  
+
+			config.title.text = data.title;
+			config.options.chart.type = data.chart_type;
+			
+			// scatter charts require data to be treated differently for configuration
+			if (data.chart_type === 'scatter') {
+				// unzip additional data poins
+				var additionalData = _.unzip(data.data[1].series);
+
+				// zip all data points together
+				var scatterData = _.zip(graphData[1], additionalData[1]);
+				config.series = [{ data: scatterData }];
+			} else {
+				// this is how data for bars and lines is loaded
+				// handle x Axis labels
+				config.xAxis.categories = graphData[0];
+				config.series = [{ data: graphData[1] }];
+			}
 		}
 	};
 });
