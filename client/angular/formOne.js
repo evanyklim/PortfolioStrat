@@ -10,28 +10,39 @@ app.controller('formOneCtrl', function ($scope, GraphFactory) {
 	
 	$scope.createGraph = function (graph) {
 		// http service to create graph
-		GraphFactory.create(graph).then(function (res) {
-			console.log(res);
+		GraphFactory.create(graph).then(function (data) {
 			// set config object here in order to display graph
+			var config = $scope.chartConfig;
+			var graphData = _.unzip(data.data[0].series);
+
+			config.title.text = data.title;
+			config.options.chart.type = data.chart_type;
+			config.series = [{ data: graphData[1] }];
+			if (data.chart_type === 'scatter') {
+				var scatterData = _.unzip(data.data[1].series);
+				config.series.push({ data: null });
+				config.series[1].data = scatterData[1];
+			}
+			$scope.chartConfig.xAxis.categories = graphData[0];
 		});
 	}
 
-	// what is the config for highcharts?
-	// have to link this up with the factory functions
 	$scope.chartConfig = {
     options: {
       chart: {
-        type: 'line',
+        type: '',
         zoomType: 'x'
       }
     },
     series: [{
-      data: [10, 15, 12, 8, 7, 1, 1, 19, 15, 10]
+      data: null
     }],
     title: {
-      text: 'Hello'
+      text: ''
     },
-    xAxis: {currentMin: 0, currentMax: 10, minRange: 1},
+    xAxis: {
+    	categories: null
+    },
     loading: false
   }
 });
@@ -40,14 +51,13 @@ app.factory('GraphFactory', function ($http) {
 	return {
 		// create a new graph
 		create: function (params) {
-			console.log('params', params)
 			return $http.post('graph/save', params).then(function (res) {
 				return res.data;
 			});
 		},
 		// retrieve graph from db
 		get: function (id) {
-			$http.get('graph/get').then(function (res) {
+			$http.get('graph/get/' + id).then(function (res) {
 				return res.data;
 			});
 		}

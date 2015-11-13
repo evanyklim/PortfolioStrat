@@ -1,3 +1,23 @@
 <section class='container'>
-	<h1>form two</h1>
+
+<h1>Form Two</h1>
+
+<form role="form" ng-submit="">
+
+  <div class='form-group'>
+    <select name="dropdown" ng-model="storedGraph.id" class='form-control'>
+			<option value="line" selected>Line</option>
+			<option value="scatter">Scatter</option>
+			<option value="bar">Bar</option>
+		</select>
+  </div>
+<!--   <div class="input-group-btn">
+    <input type="submit" class="btn btn-primary" value="Create Chart">
+  </div> -->
+</form>
+
+<h2>Your Chart</h2>
+
+<highchart id="chart2" config="returnConfig" class="span10"></highchart>
+
 </section>

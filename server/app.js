@@ -16,18 +16,6 @@ app.use(express.static(nodePath));
 // graph routes
 app.use('/graph', require('./routes/graphs'));
 
-// app.post('/graph/save', function (req, res, next) {
-// 	// saves a graph to the graph model
-// 	console.log('req body', req.body);
-// 	res.send({a:1,b:2});
-// });
-
-// app.get('/graph/get', function (req, res, next) {
-// 	// retrieves a graph using _id
-// 	// use query params?
-// 	res.send('<div>get</div>');
-// });
-
 app.use('/*', function (req, res, next) {
 	res.sendFile(indexHtmlPath);
 });

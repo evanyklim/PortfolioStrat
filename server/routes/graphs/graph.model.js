@@ -9,11 +9,9 @@ var schema = new mongoose.Schema({
   chart_type: {
     type: String, required: true
   },
-  data: { 
-    type: [ { 
-      series: [ [ Date, Number ] ] 
-    } ], required: true
-  },
+  data: [ { 
+      series: [] 
+    } ],
   data_min: {
     type: Number, required: true 
   },

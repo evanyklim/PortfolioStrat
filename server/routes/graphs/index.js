@@ -15,16 +15,15 @@ router.post('/save', function (req, res, next) {
 	} else {
 		body.data = [{ series: generateTimeSeries(10, min, max) }];
 	}
-	res.send(body);
-	
-	// Graph.create(req.body, function (err, graph) {
-	// 	if (err) return next(err);
+	Graph.create(body, function (err, graph) {
+		if (err) return next(err);
   
-	// 	res.send(graph);
-	// });
+		res.send(graph);
+	});
 });
 
 router.get('/get', function (req, res, next) {
+	console.log('req.params', req.params);
 	Graph.find().exec().then(function (graphs) {
 		res.send(graphs);
 	});
